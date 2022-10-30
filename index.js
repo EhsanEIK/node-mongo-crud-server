@@ -15,12 +15,20 @@ const run = async () => {
     try {
         const usersCollection = client.db('nodeMongoCrud').collection('users');
 
-        // show data (READ/GET Method)
+        // show data (READ/GET Method) => [for all data]
         app.get('/users', async (req, res) => {
             const query = {};
             const cursor = usersCollection.find(query);
             const users = await cursor.toArray();
             res.send(users);
+        })
+
+        // get a single data (GET method) => [for single data]
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const user = await usersCollection.findOne(query);
+            res.send(user);
         })
 
         // create data (POST method)
